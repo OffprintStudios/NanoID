@@ -28,8 +28,8 @@ public class NanoID {
     private var alphabet: String
 
     // Default Parameters
-    private static let defaultSize = 21
-    private static let defaultAlphabet = NanoIDAlphabet.urlSafe.toString()
+    public static let defaultSize = 21
+    public static let defaultAlphabet = NanoIDAlphabet.urlSafe.toString()
 
     /// Inits an instance with Shared Parameters
     init(alphabet: NanoIDAlphabet..., size: Int) {
@@ -43,7 +43,7 @@ public class NanoID {
     }
 
     /// Generates a Nano ID using Default Alphabet and given size
-    public static func new(_ size: Int = defaultSize) -> String {
+    public static func new(size: Int = defaultSize) -> String {
         return NanoIDHelper.generate(from: defaultAlphabet, of: size)
     }
 
@@ -54,7 +54,7 @@ public class NanoID {
     }
 }
 
-fileprivate struct NanoIDHelper {
+fileprivate class NanoIDHelper {
     /// Parses input alphabets into a string
     static func parse(_ alphabets: [NanoIDAlphabet]) -> String {
         var stringChars = ""
