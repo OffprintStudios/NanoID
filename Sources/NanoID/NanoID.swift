@@ -22,7 +22,7 @@ import Foundation
 /// let nanoID = NanoID(alphabet: .lowercaseLatinLetters,.numbers, size:10)
 /// let idFirst = nanoID.new()
 /// let idSecond = nanoID.new()
-public struct NanoID {
+public class NanoID {
     // Shared Parameters
     private var size: Int
     private var alphabet: String
@@ -43,12 +43,12 @@ public struct NanoID {
     }
 
     /// Generates a Nano ID using Default Alphabet and given size
-    static func new(_ size: Int = defaultSize) -> String {
+    public static func new(_ size: Int = defaultSize) -> String {
         return NanoIDHelper.generate(from: defaultAlphabet, of: size)
     }
 
     /// Generates a Nano ID using given occasional parameters
-    static func new(alphabet: NanoIDAlphabet..., size: Int) -> String {
+    public static func new(alphabet: NanoIDAlphabet..., size: Int) -> String {
         let charactersString = NanoIDHelper.parse(alphabet)
         return NanoIDHelper.generate(from: charactersString, of: size)
     }
