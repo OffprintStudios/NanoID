@@ -16,105 +16,92 @@ import Foundation
 /// let id = NanoID.new(12)
 ///
 /// Nano ID with given alphabet and length
-/// let id = NanoID.new(alphabet: .uppercasedLatinLetters, size: 15)
+/// let id = NanoID.new(alphabet: .uppercaseLatinLetters, size: 15)
 ///
 /// Nano ID with preset custom parameters
-/// let nanoID = NanoID(alphabet: .lowercasedLatinLetters,.numbers, size:10)
+/// let nanoID = NanoID(alphabet: .lowercaseLatinLetters,.numbers, size:10)
 /// let idFirst = nanoID.new()
 /// let idSecond = nanoID.new()
-
-class NanoID {
-    
+public struct NanoID {
     // Shared Parameters
     private var size: Int
     private var alphabet: String
-    
+
+    // Default Parameters
+    private static let defaultSize = 21
+    private static let defaultAlphabet = NanoIDAlphabet.urlSafe.toString()
+
     /// Inits an instance with Shared Parameters
     init(alphabet: NanoIDAlphabet..., size: Int) {
         self.size = size
         self.alphabet = NanoIDHelper.parse(alphabet)
     }
-    
+
     /// Generates a Nano ID using Shared Parameters
     func new() -> String {
         return NanoIDHelper.generate(from: alphabet, of: size)
     }
-    
-    // Default Parameters
-    private static let defaultSize = 21
-    private static let defaultAphabet = NanoIDAlphabet.urlSafe.toString()
-    
-    /// Generates a Nano ID using Default Parameters
-    static func new() -> String {
-        return NanoIDHelper.generate(from: defaultAphabet, of: defaultSize)
+
+    /// Generates a Nano ID using Default Alphabet and given size
+    static func new(_ size: Int = defaultSize) -> String {
+        return NanoIDHelper.generate(from: defaultAlphabet, of: size)
     }
-    
+
     /// Generates a Nano ID using given occasional parameters
     static func new(alphabet: NanoIDAlphabet..., size: Int) -> String {
         let charactersString = NanoIDHelper.parse(alphabet)
         return NanoIDHelper.generate(from: charactersString, of: size)
     }
-    
-    /// Generates a Nano ID using Default Alphabet and given size
-    static func new(_ size: Int) -> String {
-        return NanoIDHelper.generate(from: NanoID.defaultAphabet, of: size)
-    }
 }
 
-fileprivate class NanoIDHelper {
-    
+fileprivate struct NanoIDHelper {
     /// Parses input alphabets into a string
     static func parse(_ alphabets: [NanoIDAlphabet]) -> String {
-        
-        var stringCharacters = ""
-        
+        var stringChars = ""
         for alphabet in alphabets {
-            stringCharacters.append(alphabet.toString())
+            stringChars.append(alphabet.toString())
         }
-        
-        return stringCharacters
+        return stringChars
     }
-    
+
     /// Generates a Nano ID using given parameters
     static func generate(from alphabet: String, of length: Int) -> String {
-        var nanoID = ""
-        
+        var nanoId = ""
         for _ in 0..<length {
-            let randomCharacter = NanoIDHelper.randomCharacter(from: alphabet)
-            nanoID.append(randomCharacter)
+            let randomChar = NanoIDHelper.randomCharacter(from: alphabet)
+            nanoId.append(randomChar)
         }
-        
-        return nanoID
+        return nanoId
     }
-    
+
     /// Returns a random character from a given string
     static func randomCharacter(from string: String) -> Character {
-        let randomNum = Int(arc4random_uniform(UInt32(string.count)))
-        let randomIndex = string.index(string.startIndex, offsetBy: randomNum)
-        return string[randomIndex]
+        let randomNum = Int.random(in: 0..<string.count)
+        let randomIdx = string.index(string.startIndex, offsetBy: randomNum)
+        return string[randomIdx]
     }
 }
 
 enum NanoIDAlphabet {
     case urlSafe
-    case uppercasedLatinLetters
-    case lowercasedLatinLetters
+    case uppercaseLatinLetters
+    case lowercaseLatinLetters
     case numbers
-    
+
     func toString() -> String {
         switch self {
-        case .uppercasedLatinLetters, .lowercasedLatinLetters, .numbers:
+        case .lowercaseLatinLetters, .uppercaseLatinLetters, .numbers:
             return self.chars()
         case .urlSafe:
-            return ("\(NanoIDAlphabet.uppercasedLatinLetters.chars())\(NanoIDAlphabet.lowercasedLatinLetters.chars())\(NanoIDAlphabet.numbers.chars())~_")
+            return("\(NanoIDAlphabet.uppercaseLatinLetters.chars())\(NanoIDAlphabet.lowercaseLatinLetters.chars())\(NanoIDAlphabet.numbers.chars())-_")
         }
     }
-    
+
     private func chars() -> String {
         switch self {
-        case .uppercasedLatinLetters:
+        case .uppercaseLatinLetters:
             return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        case .lowercasedLatinLetters:
+        case .lowercaseLatinLetters:
             return "abcdefghijklmnopqrstuvwxyz"
         case .numbers:
             return "1234567890"

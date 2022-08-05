@@ -1,12 +1,17 @@
 # Nano ID
 Secure, URL-friendly, flexible and unique string ID generator for Swift. Swift realization of [Nano ID](https://github.com/ai/nanoid)
 
-**Instalation**
+## Installation
 
-Drag-n-drop `NanoID.swift` file into your project.
+Add the following to your `Package.swift` dependencies, along with the appropriate name in your project's target:
 
+```swift
+    .package(url: "https://github.com/OffprintStudios/NanoID.git", from: "1.0.0")
+/***/
+    .product(name: "NanoID", package: "NanoID")
+```
 
-**Usage**
+## Usage
 ```swift
 // Nano ID with default alphabet (0-9a-zA-Z_~) and length (21 chars)
 let id = NanoID.new() // -> dtY0D_lLeJJjM~pogpcY9
