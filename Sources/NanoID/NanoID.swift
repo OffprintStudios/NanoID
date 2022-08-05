@@ -43,7 +43,7 @@ public class NanoID {
     }
 
     /// Generates a Nano ID using Default Alphabet and given size
-    public static func new(size: Int = defaultSize) -> String {
+    public static func with(size: Int = defaultSize) -> String {
         return NanoIDHelper.generate(from: defaultAlphabet, of: size)
     }
 
