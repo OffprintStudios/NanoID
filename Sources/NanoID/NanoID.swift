@@ -82,7 +82,7 @@ fileprivate class NanoIDHelper {
     }
 }
 
-enum NanoIDAlphabet {
+public enum NanoIDAlphabet {
     case urlSafe
     case uppercaseLatinLetters
     case lowercaseLatinLetters
